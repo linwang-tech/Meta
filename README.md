@@ -1,5 +1,9 @@
 # Open-source Meta-analysis database 
 A meta-analysis was carried out, including an exploratory data-analysis and a calculation of effect sizes for specific factors (treated wastewater irrgaiton versus conventional water irrigation) on the soil structure and hydraulic properties.
+
 This repository contains:
 
-- [mean_effect.xlsx](./mean_effect.xlsx): the Meta-analysis database
+- [overview.xlsx](./overview.xlsx): overview of the studies for this meta-analysis
+- [meta_github.xlsx](./meta_gitbub.xlsx): the database of this meta-analysis
+- [mean_effect.xlsx](./mean_effect.xlsx): the effect size result of this meta-analysis
+- [meta_gitbub.xlsx](./meta_github.xlsx): the R script of this meta-analysis
