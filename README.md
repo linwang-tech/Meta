@@ -6,4 +6,4 @@ This repository contains:
 - [overview.xlsx](./overview.xlsx): overview of the studies for this meta-analysis
 - [meta_github.xlsx](./meta_gitbub.xlsx): the database of this meta-analysis
 - [mean_effect.xlsx](./mean_effect.xlsx): the effect size result of this meta-analysis
-- [meta_gitbub.xlsx](./meta_github.xlsx): the R script of this meta-analysis
+- [meta_gitbub.R](./meta_github.R): the R script of this meta-analysis
