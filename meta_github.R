@@ -55,8 +55,8 @@ me <- read_excel("C:/.../mean_effect.xlsx", sheet = "mean_effect")
 
 me_filtered <- na.omit(me)
 
-y_breaks <- seq(0, 9, 1)
-y_labels <- c("Label0", "Electrical conductivity (EC)", "Sodium adsorption ratio (SAR)", "Exchangeable sodium percentage (ESP)", "pH", "Soil organic carbon (SOC)",
+y_breaks <- seq(0, 8, 1)
+y_labels <- c("Label0", "Electrical conductivity (EC)", "Sodium adsorption ratio (SAR)", "pH", "Soil organic carbon (SOC)",
               "Saturated hydraulic conductivity (Ks)", "Total porosity(TP)", "Bulk density (BD)", "Aggregate stability (AS)")
 
 p1 <- ggplot(data = me_filtered, aes(x = me, y = y)) +
@@ -81,6 +81,7 @@ Figure_2 <- p1
 library(cowplot)
 tww <- read_excel("C:/.../mean_effect.xlsx", sheet = "TWW")
 
+tww$x <- factor(tww$x, levels = c("Mean", "PTW", "STW", "TTW"))
 p2 <- ggplot(data = tww, aes(x = me, y = y, color = x)) +
   labs(x = "Mean effect (%)", y = "", size = 3) +
   geom_point(size = 3) +
@@ -93,8 +94,8 @@ p2 <- ggplot(data = tww, aes(x = me, y = y, color = x)) +
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
         axis.line.x = element_line(color = "black", linetype = "solid")) +  # Move x-axis to the top
-  xlim(-149, 300)+
-  scale_y_continuous(breaks = seq(0, 45, 5)) +
+  xlim(-149, 249)+
+  scale_y_continuous(breaks = seq(0, 40, 5)) +
   geom_vline(aes(xintercept = 0), linetype = "solid") +
   geom_vline(aes(xintercept = -50), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = -100), linetype = "dashed", color = "grey") +
@@ -103,7 +104,6 @@ p2 <- ggplot(data = tww, aes(x = me, y = y, color = x)) +
   geom_vline(aes(xintercept = 150), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = 200), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = 250), linetype = "dashed", color = "grey") +
-  geom_vline(aes(xintercept = 300), linetype = "dashed", color = "grey") +
   geom_hline(aes(yintercept = 5), linetype = "dashed", color = "grey") +
   geom_hline(aes(yintercept = 10), linetype = "dashed", color = "grey") +
   geom_hline(aes(yintercept = 15), linetype = "dashed", color = "grey") +
@@ -115,30 +115,27 @@ p2 <- ggplot(data = tww, aes(x = me, y = y, color = x)) +
   scale_color_manual(
     values = c("Mean" = "black", "PTW" = "red", "STW" = "orange", "TTW" = "yellow"),
     name = "TWW class") +
-  scale_x_continuous(position = "top", breaks = seq(-100, 300, 50))
+  scale_x_continuous(position = "top", breaks = seq(-100, 250, 50))
 
 p2 <- p2 + theme(legend.position = "top", legend.box = "horizontal",
                  legend.text = element_text(size = 10, face= "bold"),
                  legend.title = element_text(size = 10,face="bold"),
                  axis.text.x = element_text(size = 10, face = "bold"),
                  axis.title.x = element_text(size = 10, face = "bold"))
+
+p2 <- p2 + geom_text(data = soil, aes(x = -140, y = 2.5, label = "EC"), color = "black")+
+  geom_text(data = soil, aes(x = -140, y = 7.5, label = "SAR"), color = "black")+
+  geom_text(data = soil, aes(x = -140, y = 12.5, label = "pH"), color = "black")+
+  geom_text(data = soil, aes(x = -140, y = 17.5, label = "SOC"), color = "black")+
+  geom_text(data = soil, aes(x = -140, y = 22.5, label = "Ks"), color = "black")+
+  geom_text(data = soil, aes(x = -140, y = 27.5, label = "TP"), color = "black")+
+  geom_text(data = soil, aes(x = -140, y = 32.5, label = "BD"), color = "black")+  
+  geom_text(data = soil, aes(x = -140, y = 37.5, label = "AS"), color = "black")
 p2
 
-
-p2<- p2 + geom_text(data = tww, aes(x = -140, y = 2.5, label = "EC"), color = "black")+
-  geom_text(data = tww, aes(x = -140, y = 7.5, label = "SAR"), color = "black")+
-  geom_text(data = tww, aes(x = -140, y = 12.5, label = "ESP"), color = "black")+
-  geom_text(data = tww, aes(x = -140, y = 17.5, label = "pH"), color = "black")+
-  geom_text(data = tww, aes(x = -140, y = 22.5, label = "SOC"), color = "black")+
-  geom_text(data = tww, aes(x = -140, y = 27.5, label = "Ks"), color = "black")+
-  geom_text(data = tww, aes(x = -140, y = 32.5, label = "TP"), color = "black")+
-  geom_text(data = tww, aes(x = -140, y = 37.5, label = "BD"), color = "black")+  
-  geom_text(data = tww, aes(x = -140, y = 42.5, label = "AS"), color = "black")
-
-
 soil <- read_excel("C:/.../mean_effect.xlsx", sheet = "Soil")
-soil
 
+soil$x <- factor(soil$x, levels = c("Mean", "Coarse", "Fine", "Medium"))
 p3 <- ggplot(data = soil, aes(x = me, y = y, color = x)) +
   labs(x = "Mean effect (%)", y = "", size = 3, face = "bold") +
   geom_point(size = 3) +
@@ -150,9 +147,9 @@ p3 <- ggplot(data = soil, aes(x = me, y = y, color = x)) +
         axis.ticks.y = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        axis.line.x = element_line(color = "black", linetype = "solid")) +  # Move x-axis to the top
-  xlim(-149, 300)+
-  scale_y_continuous(breaks = seq(0, 45, 5)) +
+        axis.line.x = element_line(color = "black", linetype = "solid")) +
+  xlim(-149, 249)+
+  scale_y_continuous(breaks = seq(0, 40, 5)) +
   geom_vline(aes(xintercept = 0), linetype = "solid") +
   geom_vline(aes(xintercept = -50), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = -100), linetype = "dashed", color = "grey") +
@@ -161,7 +158,6 @@ p3 <- ggplot(data = soil, aes(x = me, y = y, color = x)) +
   geom_vline(aes(xintercept = 150), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = 200), linetype = "dashed", color = "grey") +
   geom_vline(aes(xintercept = 250), linetype = "dashed", color = "grey") +
-  geom_vline(aes(xintercept = 300), linetype = "dashed", color = "grey") +
   geom_hline(aes(yintercept = 5), linetype = "dashed", color = "grey") +
   geom_hline(aes(yintercept = 10), linetype = "dashed", color = "grey") +
   geom_hline(aes(yintercept = 15), linetype = "dashed", color = "grey") +
@@ -173,25 +169,23 @@ p3 <- ggplot(data = soil, aes(x = me, y = y, color = x)) +
   scale_color_manual(
     values = c("Mean" = "black", "Fine" = "red", "Medium" = "orange", "Coarse" = "yellow"),
     name = "Soil class")  + # Specify your own colors
-  scale_x_continuous(position = "top", breaks = seq(-100, 300, 50))
+  scale_x_continuous(position = "top", breaks = seq(-100, 250, 50))
 
 p3 <- p3 + theme(legend.position = "top", legend.box = "horizontal",
                  legend.text = element_text(size = 10, face= "bold"),
                  legend.title = element_text(size = 10, face="bold"),
                  axis.text.x = element_text(size = 10, face = "bold"),
-                 axis.title.x = element_text(size = 10, face = "bold")) # Make x-axis labels bigger and bold
-p3
+                 axis.title.x = element_text(size = 10, face = "bold")) 
 
-p3 <- p3 + geom_text(data = soil, aes(x = -140, y = 2.5, label = "EC"), color = "black")+
-  geom_text(data = soil, aes(x = -140, y = 7.5, label = "SAR"), color = "black")+
-  geom_text(data = soil, aes(x = -140, y = 12.5, label = "ESP"), color = "black")+
-  geom_text(data = soil, aes(x = -140, y = 17.5, label = "pH"), color = "black")+
-  geom_text(data = soil, aes(x = -140, y = 22.5, label = "SOC"), color = "black")+
-  geom_text(data = soil, aes(x = -140, y = 27.5, label = "Ks"), color = "black")+
-  geom_text(data = soil, aes(x = -140, y = 32.5, label = "TP"), color = "black")+
-  geom_text(data = soil, aes(x = -140, y = 37.5, label = "BD"), color = "black")+  
-  geom_text(data = soil, aes(x = -140, y = 42.5, label = "AS"), color = "black")
-
+p3<- p3 + geom_text(data = tww, aes(x = -140, y = 2.5, label = "EC"), color = "black")+
+  geom_text(data = tww, aes(x = -140, y = 7.5, label = "SAR"), color = "black")+
+  geom_text(data = tww, aes(x = -140, y = 12.5, label = "pH"), color = "black")+
+  geom_text(data = tww, aes(x = -140, y = 17.5, label = "SOC"), color = "black")+
+  geom_text(data = tww, aes(x = -140, y = 22.5, label = "Ks"), color = "black")+
+  geom_text(data = tww, aes(x = -140, y = 27.5, label = "TP"), color = "black")+
+  geom_text(data = tww, aes(x = -140, y = 32.5, label = "BD"), color = "black")+  
+  geom_text(data = tww, aes(x = -140, y = 37.5, label = "AS"), color = "black")
+p2
 
 Figure_3 <- p2+p3
 
